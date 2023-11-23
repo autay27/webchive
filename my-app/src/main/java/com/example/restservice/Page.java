@@ -1,3 +1,3 @@
 package com.example.restservice;
 
-public record Page(long id, String url) { }
+public record Page(String url, String metadata) { }

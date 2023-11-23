@@ -6,27 +6,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.util.List;
+import java.util.LinkedList;
+
+
 // following https://github.com/xerial/sqlite-jdbc
 
-public class TableCreator {
+public class PageAccesser {
 
-    public static void create() {
-          String sql_create = "CREATE TABLE IF NOT EXISTS page( " +
-                          "url TEXT NOT NULL, " +
-                          "metadata TEXT)";
-
+    public static List<Page> allpages() {
 
           Connection connection = null;
+          List<Page> pagesSeen = new LinkedList();
           try
           {
             // create a database connection
             connection = DriverManager.getConnection("jdbc:sqlite:sample.db");
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
-            statement.executeUpdate(sql_create);
+            // How can I abstract out a class that provides a connection without having to be wrapped in try catch?
 
-            // add some rows to experiment
-            //statement.executeUpdate("INSERT INTO page (url, metadata) values('example.com', 'My first page')");
+            ResultSet rs = statement.executeQuery("SELECT * FROM page");
+            while (rs.next()) {
+                pagesSeen.add(new Page(rs.getString("url"), rs.getString("metadata")));
+            }
 
           }
           catch(SQLException e)
@@ -48,5 +51,8 @@ public class TableCreator {
               System.err.println(e.getMessage());
             }
           }
+
+          return pagesSeen;
+
       }
 }
