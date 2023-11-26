@@ -18,4 +18,17 @@ class Page {
         this.url = url;
         this.metadata = metadata;
     }
+
+    public String getUrl() {
+        return this.url;
+    }
+
+    public String getMetadata() {
+        return this.metadata;
+    }
+
+    @Override
+    public String toString() {
+        return "Page{" + "id=" + this.id + ", url='" + this.url + '\'' + ", metadata='" + this.metadata + '\'' + '}';
+    }
 }
